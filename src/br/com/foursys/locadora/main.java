@@ -5,6 +5,10 @@
  */
 package br.com.foursys.locadora;
 
+import br.com.foursys.locadora.view.ClienteView;
+import br.com.foursys.locadora.view.MenuView;
+import br.com.foursys.locadora.view.VendedorView;
+
 /**
  *
  * @author amendes
@@ -16,6 +20,9 @@ public class main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        //new ClienteView();
+        //new VendedorView();
+        new MenuView();
     }
     
 }

@@ -51,9 +51,9 @@ public class ClienteDAO {
 		List<Cliente> listCliente = new ArrayList<Cliente>();
 
 		while (cursor.next()) {
-			Cidade cidade = new Cidade();
+			
 			Cliente cliente = new Cliente();
-			Estado estado = new Estado();
+			
 			//filme.setNome(cursor.getString("nome"));
 			//filme.setUf(cursor.getString("uf"));
 			cliente.setNome(cursor.getString("nome"));
@@ -62,12 +62,10 @@ public class ClienteDAO {
 			
 			cliente.setBairro(cursor.getString("bairro"));
 			//String cidade2 = cidade.getNome();
-			cidade.setNome(cursor.getString("cidade"));
+			
+                        Cidade cidade = new Cidade(cursor.getString("cidade"));
 			cliente.setCidade(cidade);
-			estado.setNome(cursor.getString("estado"));
-			String estado2[] = estado.getNome().trim().split("-");
-			estado.setNome(estado2[0]);
-			estado.setUf(estado2[1]);
+                        Estado estado = new Estado(cursor.getString("estado"),"");			
 			cliente.setEstado(estado);
 			cliente.setTelefone(cursor.getString("telefone"));
 			cliente.setCpf(cursor.getString("cpf"));

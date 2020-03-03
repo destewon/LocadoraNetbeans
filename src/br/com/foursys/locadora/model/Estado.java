@@ -39,7 +39,10 @@ public class Estado {
 	}
 	
 	
-	
+	 @Override
+	public String toString(){
+            return nome;
+        }
 	
 	
 }

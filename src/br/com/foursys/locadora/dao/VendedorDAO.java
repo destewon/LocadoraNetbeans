@@ -48,7 +48,7 @@ public class VendedorDAO {
 		while (cursor.next()) {
 			Cidade cidade = new Cidade();
 			Vendedor vendedor = new Vendedor();
-			Estado estado = new Estado();
+			
 			//filme.setNome(cursor.getString("nome"));
 			//filme.setUf(cursor.getString("uf"));
 			vendedor.setNome(cursor.getString("nome"));
@@ -56,10 +56,10 @@ public class VendedorDAO {
 			
 			cidade.setNome(cursor.getString("cidade"));
 			vendedor.setCidade(cidade);
-			estado.setNome(cursor.getString("estado"));
-			String estado2[] = estado.getNome().trim().split("-");
-			estado.setNome(estado2[0]);
-			estado.setUf(estado2[1]);
+                        Estado estado = new Estado(cursor.getString("estado"),"");
+			
+			
+			
 			vendedor.setEstado(estado);
 			vendedor.setSexo(cursor.getString("sexo").charAt(0));
 			
