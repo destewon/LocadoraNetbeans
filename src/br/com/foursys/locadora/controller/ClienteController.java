@@ -79,9 +79,12 @@ public class ClienteController {
     }
 
     public void salvarCliente() {
+        
         if (this.alterar == false) {
             //inserir um registro
+            
             if (validarSalvar()) {
+                try{
                 Cliente cliente = new Cliente();
                 cliente.setNome(this.viewCliente.getJtfNome().getText());
                 cliente.setLogradouro(this.viewCliente.getJtfLogradouro().getText());
@@ -96,15 +99,23 @@ public class ClienteController {
                 cliente.setRg(this.viewCliente.getJtfRg().getText());
                 cliente.setSexo(this.viewCliente.getCbSexo().getSelectedItem().toString().charAt(0));
                 cliente.setDataNascimento(this.viewCliente.getJtfDataNascimento().getText());
-                cliente.setIdade(Integer.parseInt(this.viewCliente.getJtfIdade().getText()));
+                if (this.viewCliente.getJtfIdade().getText().trim().equals("")) {
+                    
+                    cliente.setIdade(0);
+
+                } else {
+                    cliente.setIdade(Integer.parseInt(this.viewCliente.getJtfIdade().getText()));
+                }
                 Connection bd = ConnectionFactory.getConnection();
                 ClienteDAO dao = new ClienteDAO(bd);
-                try {
+                
                     dao.inserir(cliente);
                     JOptionPane.showMessageDialog(null, "Cliente inserido com sucesso!");
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao inserir o cliente.");
                     Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+                     }catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Campos invalidos");
                 }
                 limparCampos();
                 bloqueioInicial();
@@ -118,7 +129,7 @@ public class ClienteController {
                 cliente.setBairro(this.viewCliente.getJtfBairro().getText());
                 Cidade cidade = new Cidade(this.viewCliente.getCbCidade().getSelectedItem().toString());
                 cliente.setCidade(cidade);
-                Estado estado = new Estado(this.viewCliente.getCbEstado().getSelectedItem().toString(), "");
+                Estado estado = new Estado(this.viewCliente.getCbEstado().getSelectedItem().toString(),"");
                 cliente.setEstado(estado);
                 cliente.setTelefone(this.viewCliente.getJtfTelefone().getText());
                 Connection bd = ConnectionFactory.getConnection();
@@ -162,15 +173,12 @@ public class ClienteController {
             JOptionPane.showMessageDialog(null, "Informe o sexo, campo obrigatório.");
             return false;
         }
-        if (this.viewCliente.getJtfIdade().getText().trim().equals("")) {
-            JOptionPane.showMessageDialog(null, "Informe o IDADE, campo obrigatório.");
-            return false;
-        }
+
         if (this.viewCliente.getJtfLogradouro().getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Informe o ENDEREÇO, campo obrigatório.");
             return false;
         }
-        
+
         if (this.viewCliente.getJtfNumeroLogradouro().getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Informe o NUMERO, campo obrigatório.");
             return false;
@@ -179,12 +187,12 @@ public class ClienteController {
             JOptionPane.showMessageDialog(null, "Informe o BAIRRO, campo obrigatório.");
             return false;
         }
-         
+
         if (this.viewCliente.getJtfTelefone().getText().equals("(  )    -    ")) {
             JOptionPane.showMessageDialog(null, "Informe o DATA DE NASCIMENTO, campo obrigatório.");
             return false;
         }
-        
+
         if (this.viewCliente.getCbCidade().getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Informe o CIDADE, campo obrigatório.");
             return false;
@@ -211,7 +219,7 @@ public class ClienteController {
         DefaultTableModel modelo = (DefaultTableModel) this.viewCliente.getTabelaCliente().getModel();
         modelo.setRowCount(0);
         for (Cliente listaCliente : listaClientes) {
-            modelo.addRow(new String[]{listaCliente.getNome(), listaCliente.getCidade().getNome().toString(), listaCliente.getTelefone(), listaCliente.getIdade() + " anos"});
+            modelo.addRow(new String[]{listaCliente.getNome(), listaCliente.getCidade().getNome().toString(), listaCliente.getTelefone(), (listaCliente.getIdade()!=0)?listaCliente.getIdade() + " anos":" "});
         }
     }
 
@@ -297,20 +305,20 @@ public class ClienteController {
 
     public void acaoBotaoCancelar() {
         int opcao = JOptionPane.showConfirmDialog(null, "Confirma cancelar?", "Atenção",
-                    JOptionPane.YES_OPTION,
-                    JOptionPane.CANCEL_OPTION);
-            if (opcao == JOptionPane.YES_OPTION) {
-                
-        this.viewCliente.getJbtNovo().setEnabled(true);
-        this.viewCliente.getJbtAlterar().setEnabled(true);
-        this.viewCliente.getJbtExcluir().setEnabled(true);
-        this.viewCliente.getJbtSair().setEnabled(true);
-        this.viewCliente.getJbtSalvar().setEnabled(false);
-        this.viewCliente.getJbtCancelar().setEnabled(false);
-        limparCampos();
+                JOptionPane.YES_OPTION,
+                JOptionPane.CANCEL_OPTION);
+        if (opcao == JOptionPane.YES_OPTION) {
 
-        bloquearCampos();
-            }
+            this.viewCliente.getJbtNovo().setEnabled(true);
+            this.viewCliente.getJbtAlterar().setEnabled(true);
+            this.viewCliente.getJbtExcluir().setEnabled(true);
+            this.viewCliente.getJbtSair().setEnabled(true);
+            this.viewCliente.getJbtSalvar().setEnabled(false);
+            this.viewCliente.getJbtCancelar().setEnabled(false);
+            limparCampos();
+
+            bloquearCampos();
+        }
     }
 
     public void acaoBotaoAlterar() {
@@ -341,14 +349,14 @@ public class ClienteController {
         liberarCampos();
         this.alterar = false;
     }
-    
-    public void fechar(){
-         int opcao = JOptionPane.showConfirmDialog(null, "Confirma fechar a janela?", "Atenção",
-                    JOptionPane.YES_OPTION,
-                    JOptionPane.CANCEL_OPTION);
-            if (opcao == JOptionPane.YES_OPTION) {
-                viewCliente.dispose();
-            }
+
+    public void fechar() {
+        int opcao = JOptionPane.showConfirmDialog(null, "Confirma fechar a janela?", "Atenção",
+                JOptionPane.YES_OPTION,
+                JOptionPane.CANCEL_OPTION);
+        if (opcao == JOptionPane.YES_OPTION) {
+            viewCliente.dispose();
+        }
     }
 
 }

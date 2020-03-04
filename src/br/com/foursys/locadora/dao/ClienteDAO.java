@@ -32,7 +32,7 @@ public class ClienteDAO {
 		comando.setInt(3, cliente.getNumeroLogradouro());
 		comando.setString(4, cliente.getBairro());
 		comando.setString(5, cliente.getCidade().getNome());
-		comando.setString(6, cliente.getEstado().getNome()+" - "+cliente.getEstado().getUf());		
+		comando.setString(6, cliente.getEstado().getNome());		
 		comando.setString(7, cliente.getTelefone());
 		comando.setString(8, cliente.getCpf());
 		comando.setString(9, cliente.getRg());

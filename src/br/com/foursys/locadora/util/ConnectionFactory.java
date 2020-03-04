@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import com.mysql.jdbc.Connection;
 
-//Classe responsavel por efetuar conecção com o banco de dados
+//Classe responsavel por efetuar conexÃ£o com o banco de dados
 
 public class ConnectionFactory {
 

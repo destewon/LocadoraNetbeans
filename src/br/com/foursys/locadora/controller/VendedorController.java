@@ -81,6 +81,7 @@ public class VendedorController {
         if (this.alterar == false) {
             //inserir um registro
             if (validarSalvar()) {
+                try{
                 Vendedor vendedor = new Vendedor();
                 vendedor.setNome(this.viewVendedor.getJtfNome().getText());
 
@@ -95,12 +96,14 @@ public class VendedorController {
                 vendedor.setSalario(Double.parseDouble(this.viewVendedor.getJtfSalario().getText()));
                 Connection bd = ConnectionFactory.getConnection();
                 VendedorDAO dao = new VendedorDAO(bd);
-                try {
+                
                     dao.inserir(vendedor);
                     JOptionPane.showMessageDialog(null, "Vendedor inserido com sucesso!");
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao inserir o Vendedor.");
                     Logger.getLogger(VendedorController.class.getName()).log(Level.SEVERE, null, ex);
+                 }catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Campos invalidos");
                 }
                 limparCampos();
                 bloqueioInicial();

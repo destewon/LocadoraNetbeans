@@ -64,7 +64,7 @@ public class FilmeDAO {
 	
 	public void alterar(Filme filme) throws SQLException {
 
-		String sql = "UPDATE filme SET  valor=?, disponivel=?, promocao=?,valor_promocao=? WHERE codigo=?";
+		String sql = "UPDATE filme SET  valor=?, disponivel=?, promocao=?,valor_promocao=?,genero=? WHERE codigo=?";
 
 		PreparedStatement comando = bd.prepareStatement(sql);
 
@@ -77,7 +77,8 @@ public class FilmeDAO {
 		comando.setBoolean(2, filme.isDisponivel());
 		comando.setBoolean(3, filme.isPromocao());
 		comando.setDouble(4, filme.getValorPromocional());
-		comando.setInt(5, filme.getCodigo());
+		comando.setString(5, filme.getGenero());
+		comando.setInt(6, filme.getCodigo());
 		
 		
 	

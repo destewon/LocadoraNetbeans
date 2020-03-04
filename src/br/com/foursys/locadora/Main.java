@@ -13,7 +13,7 @@ import br.com.foursys.locadora.view.VendedorView;
  *
  * @author amendes
  */
-public class main {
+public class Main {
 
     /**
      * @param args the command line arguments
