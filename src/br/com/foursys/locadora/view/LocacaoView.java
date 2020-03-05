@@ -362,7 +362,7 @@ public class LocacaoView extends javax.swing.JFrame {
     }//GEN-LAST:event_JcbClienteActionPerformed
 
     private void JbtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbtCancelarActionPerformed
-        // TODO add your handling code here:
+        this.locacaoController.cancelar();
     }//GEN-LAST:event_JbtCancelarActionPerformed
 
     private void JbtSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbtSalvarActionPerformed

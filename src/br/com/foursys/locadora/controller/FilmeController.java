@@ -180,7 +180,7 @@ public class FilmeController {
             this.viewFilme.getJtfValorPromocao().setText(filme.getValorPromocional() + "");
 
             this.viewFilme.getJcbDisponivel().setSelectedItem((filme.isDisponivel()) ? "SIM" : "NÃO");
-            this.viewFilme.getJcbPromocao().setSelectedItem((filme.isDisponivel()) ? "SIM" : "NÃO");
+            this.viewFilme.getJcbPromocao().setSelectedItem((filme.isPromocao()) ? "SIM" : "NÃO");
 
             this.viewFilme.getJtfCodigo().setEditable(false);
             this.viewFilme.getJtfNome().setEditable(false);

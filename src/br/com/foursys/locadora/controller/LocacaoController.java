@@ -178,8 +178,38 @@ public class LocacaoController {
     }
     
     
-    public void validarCampos(){
+    public boolean validarCampos(){
         
+        
+        if (this.viewLocacao.getTabelaLocacao().getRowCount()==0) {
+            JOptionPane.showMessageDialog(null, "Informe o UM FILME, campo obrigatório.");
+            return false;
+        }
+        
+        if (this.viewLocacao.getJtfValorPago().getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Informe o VALOR PAGO, campo obrigatório.");
+            return false;
+        }
+         if (this.viewLocacao.getJcbCliente().getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Informe o CLIENTE, campo obrigatório.");
+            return false;
+        }
+         
+         if (this.viewLocacao.getJcbVendedor().getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Informe o VENDEDOR, campo obrigatório.");
+            return false;
+        }
+         
+         if (opcaoSelecionada().trim().equals("")||opcaoSelecionada().trim().equals(null)) {
+            JOptionPane.showMessageDialog(null, "Informe o A FORMA DE PAGAMENTO, campo obrigatório.");
+            return false;
+        }
+        
+        if (Double.parseDouble(this.viewLocacao.getJtfTroco().getText().trim().replace(",", "."))<0.0) {
+            JOptionPane.showMessageDialog(null, "VALOR PAGO INSUFICIENTE");
+            return false;
+        }
+        return true;
     }
     
     public void aux(){
@@ -188,38 +218,90 @@ public class LocacaoController {
     }
     
     public void acaoBotaoSalvar(){
+        if (validarCampos()) {
+            
+        
        HSSFWorkbook workbook = new HSSFWorkbook();
 		
         HSSFSheet sheetAlunos = workbook.createSheet("Filme");
-        locacao.setCliente(listaClientes.get(this.viewLocacao.getJcbCliente().getSelectedIndex()));
-        locacao.setVendedor(listaVendedores.get(this.viewLocacao.getJcbVendedor().getSelectedIndex()));
-        locacao.setFilme(listaFilmeLocacao.get(this.viewLocacao.getJcbFilme().getSelectedIndex()));
+        locacao.setCliente(listaClientes.get(this.viewLocacao.getJcbCliente().getSelectedIndex()-1));
+        locacao.setVendedor(listaVendedores.get(this.viewLocacao.getJcbVendedor().getSelectedIndex()-1));
+        locacao.setFilme(listaFilmeLocacao.get(this.viewLocacao.getJcbFilme().getSelectedIndex()-1));
         
-        List<Locacao> listaLocacao = new ArrayList<Locacao>();
+        //List<Locacao> listaLocacao = new ArrayList<Locacao>();
         //listaLocacao.add(new locacao(locacao.getCliente(),locacao.getVendedor(),locacao.getListaFilmes(),locacao.getFilme(),locacao.getValorTotal(),locacao.getValorPago(),locacao.getFormaPagamento()));
-           
+        //listaLocacao.add(listaFilmeLocacao);  
         int rowNum = 0;
         Row row = sheetAlunos.createRow(0);
         //Row row = sheetAlunos.createRow(rowNum++);
-                        //Cell cellNome = row.createCell(0);
-			//cellNome.setCellValue("Nome:");
+                        Cell cellNome = row.createCell(0);
+			cellNome.setCellValue("Nome:");
                         
                         Cell cellNome2 = row.createCell(1);
 			cellNome2.setCellValue(locacao.getCliente().getNome());
                         
-                        //Cell cellCpf = row.createCell(2);
-			//cellCpf.setCellValue("CPF:");
+                        Cell cellCpf = row.createCell(2);
+			cellCpf.setCellValue("CPF:");
                         
-                        //Cell cellCpf2 = row.createCell(3);
-			//cellCpf2.setCellValue(locacao.getCliente().getNome());
+                        Cell cellCpf2 = row.createCell(3);
+			cellCpf2.setCellValue(locacao.getCliente().getCpf());
+                        row = sheetAlunos.createRow(1);
+                        Cell cellNomeVendedor = row.createCell(0);
+			cellNomeVendedor.setCellValue("Vendedor:");
                         
-		/*for (Locacao locacao : listaLocacao) {
+                        Cell cellNomeVendedor2 = row.createCell(1);
+                        cellNomeVendedor2.setCellValue(locacao.getVendedor().getNome());
+                        
+                        Cell cellAreaVendedor = row.createCell(2);
+			cellAreaVendedor.setCellValue("Area:");
+                        
+                        Cell cellAreaVendedor2 = row.createCell(3);
+			cellAreaVendedor2.setCellValue(locacao.getVendedor().getAreaVenda());
+                        row = sheetAlunos.createRow(2);
+                        Cell cellFormaPagamento = row.createCell(0);
+			cellFormaPagamento.setCellValue("Forma Pagamento:");
+                        
+                        Cell cellFormaPagamento2 = row.createCell(1);
+			cellFormaPagamento2.setCellValue(opcaoSelecionada());
+                        
+                        row = sheetAlunos.createRow(4);
+                        Cell cellCodigoFilme = row.createCell(0);
+			cellCodigoFilme.setCellValue("Codigo");
+                        
+                        Cell cellNomeFilme = row.createCell(1);
+			cellNomeFilme.setCellValue("Nome");
+                        
+                        Cell cellValorFilme = row.createCell(2);
+			cellValorFilme.setCellValue("Valor");
+                        
+                        Cell cellPromocaoFilme = row.createCell(3);
+			cellPromocaoFilme.setCellValue("Promoção");     
+                        
+                        Cell cellValorPromocaoFilme = row.createCell(4);
+			cellValorPromocaoFilme.setCellValue("Valor Promoção");
+                        rowNum = 5;
+		for (Filme locacao : listaFilmeLocacao) {
 			
 			row = sheetAlunos.createRow(rowNum++);
 			
 			int cellNum = 0;
-			
                         
+                        Cell cellCodigoFilme2 = row.createCell(cellNum++);
+			cellCodigoFilme2.setCellValue(locacao.getCodigo());
+                        
+                        Cell cellNomeFilme2 = row.createCell(cellNum++);
+			cellNomeFilme2.setCellValue(locacao.getNome());
+			
+                        Cell cellValorFilme2 = row.createCell(cellNum++);
+			cellValorFilme2.setCellValue(locacao.getValor());
+                        
+                        Cell cellPromocaoFilme2 = row.createCell(cellNum++);
+			cellPromocaoFilme2.setCellValue((locacao.isPromocao())? "SIM" : "NÃO");
+                        
+                        
+                        
+                        Cell cellValorPromocaoFilme2 = row.createCell(cellNum++);
+			cellValorPromocaoFilme2.setCellValue(locacao.getValorPromocional());
                         
 			//Cell cellNome2 = row.createCell(cellNum++);
 			//cellNome2.setCellValue(locacao.getCliente().getNome());
@@ -227,7 +309,7 @@ public class LocacaoController {
 			
 			
 			
-		}*/
+		}
 		
 		
 		try {
@@ -246,13 +328,54 @@ public class LocacaoController {
 		}
 		
 		System.out.println("Arquivo criado com sucesso!!");
-		
-		
+		limparCampos();
+		} else {
+            
+        }
 		
 		
 }	
         
+    public String opcaoSelecionada() {
+		String resposta = "";
+		
+		if(this.viewLocacao.getJrbCheque().isSelected()) {
+			resposta+=this.viewLocacao.getJrbCheque().getText();
+		}
+		if(this.viewLocacao.getJrbCredito().isSelected()) {
+			resposta+=this.viewLocacao.getJrbCredito().getText();
+		}
+		if(this.viewLocacao.getJrbDebito().isSelected()) {
+			resposta+=this.viewLocacao.getJrbDebito().getText();
+		}
+		if(this.viewLocacao.getJrbDinheiro().isSelected()) {
+			resposta+=this.viewLocacao.getJrbDinheiro().getText();
+		}
+		//troca a cor da fonte para vermelhor
+		
+		
+		
+		return resposta;
+	}
     
     
+    public void limparCampos(){
+        this.viewLocacao.getJcbCliente().setSelectedIndex(0);
+        this.viewLocacao.getJcbFilme().setSelectedIndex(0);
+        this.viewLocacao.getJcbVendedor().setSelectedIndex(0);
+        this.viewLocacao.getTabelaLocacao().removeAll();
+        this.viewLocacao.getJtfTroco().setText(null);
+        this.viewLocacao.getJtfValorPago().setText(null);
+        this.viewLocacao.getJtfValorTotal().setText(null);
+        this.viewLocacao.getButtonGroup1().clearSelection();
+         DefaultTableModel modelo = (DefaultTableModel) this.viewLocacao.getTabelaLocacao().getModel();
+        //this.viewLocacao.getTabelaLocacao().setR
+                modelo.setRowCount(0);
+    }
+    
+    public void cancelar(){
+        limparCampos();
+        
+    }
     
 }
