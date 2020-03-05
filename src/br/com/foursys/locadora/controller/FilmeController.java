@@ -18,8 +18,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-
 /**
  *
  * @author amendes
@@ -36,39 +34,42 @@ public class FilmeController {
         this.viewFilme = viewFilme;
     }
 
+    public FilmeController() {
+
+    }
+
     public void salvarFilme() {
         if (!this.alterar) {
             //incluir
 
             if (validarSalvar()) {
-                try{
-                Filme filme = new Filme();
+                try {
+                    Filme filme = new Filme();
 
-                filme.setCodigo(Integer.parseInt(this.viewFilme.getJtfCodigo().getText()));
-                filme.setNome(this.viewFilme.getJtfNome().getText());
-                filme.setValor(Double.parseDouble(this.viewFilme.getJtfValor().getText()));
-                filme.setValorPromocional(Double.parseDouble(this.viewFilme.getJtfValorPromocao().getText()));
-                filme.setDisponivel((this.viewFilme.getJcbDisponivel().getSelectedItem().toString() == "SIM") ? true : false);
-                filme.setPromocao((this.viewFilme.getJcbPromocao().getSelectedItem().toString() == "SIM") ? true : false);
+                    filme.setCodigo(Integer.parseInt(this.viewFilme.getJtfCodigo().getText()));
+                    filme.setNome(this.viewFilme.getJtfNome().getText());
+                    filme.setValor(Double.parseDouble(this.viewFilme.getJtfValor().getText()));
+                    filme.setValorPromocional(Double.parseDouble(this.viewFilme.getJtfValorPromocao().getText()));
+                    filme.setDisponivel((this.viewFilme.getJcbDisponivel().getSelectedItem().toString() == "SIM") ? true : false);
+                    filme.setPromocao((this.viewFilme.getJcbPromocao().getSelectedItem().toString() == "SIM") ? true : false);
 
-                String genero = verificaGenero();
-                filme.setGenero(genero);
-                Connection bd = ConnectionFactory.getConnection();
-                FilmeDAO dao = new FilmeDAO(bd);
-                   
-              
+                    String genero = verificaGenero();
+                    filme.setGenero(genero);
+                    Connection bd = ConnectionFactory.getConnection();
+                    FilmeDAO dao = new FilmeDAO(bd);
+
                     dao.inserir(filme);
                     JOptionPane.showMessageDialog(null, "Filme inserido com sucesso!");
                     limparCampos();
-                bloqueioInicial();
-                listarFilmes();
+                    bloqueioInicial();
+                    listarFilmes();
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao inserir o filme.");
                     Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-                }catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Campos invalidos");
-            }
-                
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Campos invalidos");
+                }
+
             }
         } else {
             //alterar
@@ -88,17 +89,17 @@ public class FilmeController {
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Erro ao alterar o filme.");
                 Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-            
+
             }
-        
-        limparCampos();
-        bloqueioInicial();
-        listarFilmes();
+
+            limparCampos();
+            bloqueioInicial();
+            listarFilmes();
+        }
+
     }
 
-}
-
-public void excluirFilme() {
+    public void excluirFilme() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewFilme.getTabelaFilme().getModel();
         if (this.viewFilme.getTabelaFilme().getSelectedRow() < 0) {
             JOptionPane.showMessageDialog(null, "É necessário selecionar um cliente");
@@ -117,13 +118,25 @@ public void excluirFilme() {
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao excluir o cliente!");
                     Logger
-
-.getLogger(ClienteController.class  
-
-.getName()).log(Level.SEVERE, null, ex);
+                            .getLogger(ClienteController.class
+                                    .getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
+    }
+
+    public List<Filme> buscarTodos() {
+        Connection bd = ConnectionFactory.getConnection();
+        FilmeDAO dao = new FilmeDAO(bd);
+        try {
+
+            listaFilmes = dao.buscarTodos();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FilmeController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaFilmes;
     }
 
     public void listarFilmes() {
@@ -133,12 +146,10 @@ public void excluirFilme() {
         try {
             listaFilmes = dao.buscarTodos();
             carregarTabela();
-        
 
-} catch (SQLException ex) {
-            Logger.getLogger(FilmeController.class  
-
-.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(FilmeController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -344,42 +355,42 @@ public void excluirFilme() {
     }
 
     public boolean validarSalvar() {
-        if (this.viewFilme.getJtfCodigo().getText().trim().equals(null)||this.viewFilme.getJtfCodigo().getText().trim().equals("")) {
+        if (this.viewFilme.getJtfCodigo().getText().trim().equals(null) || this.viewFilme.getJtfCodigo().getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Informe CODIGO, Campo obrigatorio!", "ERRO", 0);
             return false;
         }
 
-        if (this.viewFilme.getJtfNome().getText().trim().equals(null)||this.viewFilme.getJtfNome().getText().trim().equals("")) {
+        if (this.viewFilme.getJtfNome().getText().trim().equals(null) || this.viewFilme.getJtfNome().getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Informe NOME, Campo obrigatorio!", "ERRO", 0);
             return false;
         }
-        if (this.viewFilme.getJtfValor().getText().trim().equals(null)||this.viewFilme.getJtfValor().getText().trim().equals("")) {
+        if (this.viewFilme.getJtfValor().getText().trim().equals(null) || this.viewFilme.getJtfValor().getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Informe VALOR, Campo obrigatorio!", "ERRO", 0);
             return false;
         }
 
-        if (this.viewFilme.getJtfValorPromocao().getText().trim().equals(null)||this.viewFilme.getJtfValorPromocao().getText().trim().equals("")) {
+        if (this.viewFilme.getJtfValorPromocao().getText().trim().equals(null) || this.viewFilme.getJtfValorPromocao().getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Informe VALOR PROMOÇÃO, Campo obrigatorio!", "ERRO", 0);
             return false;
         }
-         if (this.viewFilme.getJcbDisponivel().getSelectedIndex() == 0) {
-         JOptionPane.showMessageDialog(null, "Informe o DISPONIVEL, campo obrigatório.");
-         return false;
-         }
-          if (this.viewFilme.getJcbPromocao().getSelectedIndex() == 0) {
-         JOptionPane.showMessageDialog(null, "Informe o PROMOÇÃO, campo obrigatório.");
-         return false;
-         }
+        if (this.viewFilme.getJcbDisponivel().getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Informe o DISPONIVEL, campo obrigatório.");
+            return false;
+        }
+        if (this.viewFilme.getJcbPromocao().getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Informe o PROMOÇÃO, campo obrigatório.");
+            return false;
+        }
         if (this.viewFilme.getJchAcao().isSelected() || this.viewFilme.getJchAnimacao().isSelected() || this.viewFilme.getJchAventura().isSelected() || this.viewFilme.getJchComedia().isSelected() || this.viewFilme.getJchFiccao().isSelected() || this.viewFilme.getJchInfantil().isSelected() || this.viewFilme.getJchOutro().isSelected() || this.viewFilme.getJchTerror().isSelected()) {
-              
-        }else{
-           JOptionPane.showMessageDialog(null, "Informe Genero, Campo obrigatorio!", "ERRO", 0);
-           return false;
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Informe Genero, Campo obrigatorio!", "ERRO", 0);
+            return false;
         }
 
         return true;
     }
-    
+
     public void carregarCheckBoxGenero() {
         String genero[] = filme.getGenero().split(";");
         String retorno = "";
@@ -435,7 +446,7 @@ public void excluirFilme() {
         if (!genero[6].equals(" ")) {
             retorno += "Aventura ";
         }
-       
+
         if (!genero[7].equals(" ")) {
             retorno += "Outro ";
         }

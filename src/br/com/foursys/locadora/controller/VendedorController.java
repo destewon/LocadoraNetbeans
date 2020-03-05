@@ -29,6 +29,10 @@ public class VendedorController {
     private List<Estado> estados;
     private boolean alterar;
 
+    public VendedorController() {
+
+    }
+
     public VendedorController(VendedorView viewVendedor) {
         this.viewVendedor = viewVendedor;
     }
@@ -81,29 +85,29 @@ public class VendedorController {
         if (this.alterar == false) {
             //inserir um registro
             if (validarSalvar()) {
-                try{
-                Vendedor vendedor = new Vendedor();
-                vendedor.setNome(this.viewVendedor.getJtfNome().getText());
+                try {
+                    Vendedor vendedor = new Vendedor();
+                    vendedor.setNome(this.viewVendedor.getJtfNome().getText());
 
-                Cidade cidade = new Cidade(this.viewVendedor.getCbCidade().getSelectedItem().toString());
-                vendedor.setCidade(cidade);
-                Estado estado = new Estado(this.viewVendedor.getCbEstado().getSelectedItem().toString(), "");
-                vendedor.setEstado(estado);
+                    Cidade cidade = new Cidade(this.viewVendedor.getCbCidade().getSelectedItem().toString());
+                    vendedor.setCidade(cidade);
+                    Estado estado = new Estado(this.viewVendedor.getCbEstado().getSelectedItem().toString(), "");
+                    vendedor.setEstado(estado);
 
-                vendedor.setSexo(this.viewVendedor.getCbSexo().getSelectedItem().toString().charAt(0));
-                vendedor.setAreaVenda(this.viewVendedor.getJtfAreaVenda().getText());
-                vendedor.setIdade(Integer.parseInt(this.viewVendedor.getJtfIdade().getText()));
-                vendedor.setSalario(Double.parseDouble(this.viewVendedor.getJtfSalario().getText()));
-                Connection bd = ConnectionFactory.getConnection();
-                VendedorDAO dao = new VendedorDAO(bd);
-                
+                    vendedor.setSexo(this.viewVendedor.getCbSexo().getSelectedItem().toString().charAt(0));
+                    vendedor.setAreaVenda(this.viewVendedor.getJtfAreaVenda().getText());
+                    vendedor.setIdade(Integer.parseInt(this.viewVendedor.getJtfIdade().getText()));
+                    vendedor.setSalario(Double.parseDouble(this.viewVendedor.getJtfSalario().getText()));
+                    Connection bd = ConnectionFactory.getConnection();
+                    VendedorDAO dao = new VendedorDAO(bd);
+
                     dao.inserir(vendedor);
                     JOptionPane.showMessageDialog(null, "Vendedor inserido com sucesso!");
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao inserir o Vendedor.");
                     Logger.getLogger(VendedorController.class.getName()).log(Level.SEVERE, null, ex);
-                 }catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Campos invalidos");
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Campos invalidos");
                 }
                 limparCampos();
                 bloqueioInicial();
@@ -154,26 +158,38 @@ public class VendedorController {
             return false;
         }
         if (this.viewVendedor.getCbSexo().getSelectedIndex() == 0) {
-         JOptionPane.showMessageDialog(null, "Informe o SEXO, campo obrigatório.");
-         return false;
-         }
+            JOptionPane.showMessageDialog(null, "Informe o SEXO, campo obrigatório.");
+            return false;
+        }
         if (this.viewVendedor.getJtfAreaVenda().getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Informe o AREA DE VENDA, campo obrigatório.");
             return false;
         }
         if (this.viewVendedor.getCbEstado().getSelectedIndex() == 0) {
-         JOptionPane.showMessageDialog(null, "Informe o ESTADO, campo obrigatório.");
-         return false;
-         }
+            JOptionPane.showMessageDialog(null, "Informe o ESTADO, campo obrigatório.");
+            return false;
+        }
         if (this.viewVendedor.getCbCidade().getSelectedIndex() == 0) {
-         JOptionPane.showMessageDialog(null, "Informe o CIDADE, campo obrigatório.");
-         return false;
-         }
+            JOptionPane.showMessageDialog(null, "Informe o CIDADE, campo obrigatório.");
+            return false;
+        }
         if (this.viewVendedor.getJtfSalario().getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Informe o SALARIO, campo obrigatório.");
             return false;
         }
         return true;
+    }
+
+    public List<Vendedor> buscarTodosVendedores() {
+        Connection bd = ConnectionFactory.getConnection();
+        VendedorDAO dao = new VendedorDAO(bd);
+        try {
+            listaVendedor = dao.buscarTodos();
+        } catch (SQLException ex) {
+            Logger.getLogger(VendedorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listaVendedor;
     }
 
     public void listarVendedores() {

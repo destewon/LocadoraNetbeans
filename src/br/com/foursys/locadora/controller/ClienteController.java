@@ -27,6 +27,10 @@ public class ClienteController {
     private List<Estado> estados;
     private boolean alterar;
 
+    public ClienteController() {
+
+    }
+
     public ClienteController(ClienteView viewCliente) {
         this.viewCliente = viewCliente;
     }
@@ -79,43 +83,43 @@ public class ClienteController {
     }
 
     public void salvarCliente() {
-        
+
         if (this.alterar == false) {
             //inserir um registro
-            
-            if (validarSalvar()) {
-                try{
-                Cliente cliente = new Cliente();
-                cliente.setNome(this.viewCliente.getJtfNome().getText());
-                cliente.setLogradouro(this.viewCliente.getJtfLogradouro().getText());
-                cliente.setNumeroLogradouro(Integer.parseInt(this.viewCliente.getJtfNumeroLogradouro().getText()));
-                cliente.setBairro(this.viewCliente.getJtfBairro().getText());
-                Cidade cidade = new Cidade(this.viewCliente.getCbCidade().getSelectedItem().toString());
-                cliente.setCidade(cidade);
-                Estado estado = new Estado(this.viewCliente.getCbEstado().getSelectedItem().toString(), "");
-                cliente.setEstado(estado);
-                cliente.setTelefone(this.viewCliente.getJtfTelefone().getText());
-                cliente.setCpf(this.viewCliente.getJtfCpf().getText());
-                cliente.setRg(this.viewCliente.getJtfRg().getText());
-                cliente.setSexo(this.viewCliente.getCbSexo().getSelectedItem().toString().charAt(0));
-                cliente.setDataNascimento(this.viewCliente.getJtfDataNascimento().getText());
-                if (this.viewCliente.getJtfIdade().getText().trim().equals("")) {
-                    
-                    cliente.setIdade(0);
 
-                } else {
-                    cliente.setIdade(Integer.parseInt(this.viewCliente.getJtfIdade().getText()));
-                }
-                Connection bd = ConnectionFactory.getConnection();
-                ClienteDAO dao = new ClienteDAO(bd);
-                
+            if (validarSalvar()) {
+                try {
+                    Cliente cliente = new Cliente();
+                    cliente.setNome(this.viewCliente.getJtfNome().getText());
+                    cliente.setLogradouro(this.viewCliente.getJtfLogradouro().getText());
+                    cliente.setNumeroLogradouro(Integer.parseInt(this.viewCliente.getJtfNumeroLogradouro().getText()));
+                    cliente.setBairro(this.viewCliente.getJtfBairro().getText());
+                    Cidade cidade = new Cidade(this.viewCliente.getCbCidade().getSelectedItem().toString());
+                    cliente.setCidade(cidade);
+                    Estado estado = new Estado(this.viewCliente.getCbEstado().getSelectedItem().toString(), "");
+                    cliente.setEstado(estado);
+                    cliente.setTelefone(this.viewCliente.getJtfTelefone().getText());
+                    cliente.setCpf(this.viewCliente.getJtfCpf().getText());
+                    cliente.setRg(this.viewCliente.getJtfRg().getText());
+                    cliente.setSexo(this.viewCliente.getCbSexo().getSelectedItem().toString().charAt(0));
+                    cliente.setDataNascimento(this.viewCliente.getJtfDataNascimento().getText());
+                    if (this.viewCliente.getJtfIdade().getText().trim().equals("")) {
+
+                        cliente.setIdade(0);
+
+                    } else {
+                        cliente.setIdade(Integer.parseInt(this.viewCliente.getJtfIdade().getText()));
+                    }
+                    Connection bd = ConnectionFactory.getConnection();
+                    ClienteDAO dao = new ClienteDAO(bd);
+
                     dao.inserir(cliente);
                     JOptionPane.showMessageDialog(null, "Cliente inserido com sucesso!");
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Erro ao inserir o cliente.");
                     Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-                     }catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Campos invalidos");
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Campos invalidos");
                 }
                 limparCampos();
                 bloqueioInicial();
@@ -129,7 +133,7 @@ public class ClienteController {
                 cliente.setBairro(this.viewCliente.getJtfBairro().getText());
                 Cidade cidade = new Cidade(this.viewCliente.getCbCidade().getSelectedItem().toString());
                 cliente.setCidade(cidade);
-                Estado estado = new Estado(this.viewCliente.getCbEstado().getSelectedItem().toString(),"");
+                Estado estado = new Estado(this.viewCliente.getCbEstado().getSelectedItem().toString(), "");
                 cliente.setEstado(estado);
                 cliente.setTelefone(this.viewCliente.getJtfTelefone().getText());
                 Connection bd = ConnectionFactory.getConnection();
@@ -203,7 +207,20 @@ public class ClienteController {
         }
         return true;
     }
-
+    
+    
+    public List<Cliente> buscarTodos(){
+        Connection bd = ConnectionFactory.getConnection();
+        ClienteDAO dao = new ClienteDAO(bd);
+        try {
+            listaClientes = dao.buscarTodos();           
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listaClientes;
+    }
+    
     public void listarClientes() {
         Connection bd = ConnectionFactory.getConnection();
         ClienteDAO dao = new ClienteDAO(bd);
@@ -214,12 +231,14 @@ public class ClienteController {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
 
     public void carregarTabela() {
         DefaultTableModel modelo = (DefaultTableModel) this.viewCliente.getTabelaCliente().getModel();
         modelo.setRowCount(0);
         for (Cliente listaCliente : listaClientes) {
-            modelo.addRow(new String[]{listaCliente.getNome(), listaCliente.getCidade().getNome().toString(), listaCliente.getTelefone(), (listaCliente.getIdade()!=0)?listaCliente.getIdade() + " anos":" "});
+            modelo.addRow(new String[]{listaCliente.getNome(), listaCliente.getCidade().getNome().toString(), listaCliente.getTelefone(), (listaCliente.getIdade() != 0) ? listaCliente.getIdade() + " anos" : " "});
         }
     }
 
@@ -336,6 +355,7 @@ public class ClienteController {
         this.viewCliente.getJtfIdade().setEditable(false);
         this.viewCliente.getJtfLogradouro().grabFocus();
         this.viewCliente.getCbSexo().setEnabled(false);
+        this.viewCliente.getJtfDataNascimento().setEditable(false);
 
     }
 

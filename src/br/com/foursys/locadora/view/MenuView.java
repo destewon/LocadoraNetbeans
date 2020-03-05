@@ -21,6 +21,7 @@ public class MenuView extends javax.swing.JFrame {
      */
     public MenuView() {
         initComponents();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -76,6 +77,11 @@ public class MenuView extends javax.swing.JFrame {
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/locadora/view/icons/locação.png"))); // NOI18N
         jButton5.setText("Locação");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/foursys/locadora/view/icons/sair.png"))); // NOI18N
         jButton6.setText("Sair");
@@ -194,6 +200,10 @@ public class MenuView extends javax.swing.JFrame {
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         new FilmeView();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        new LocacaoView();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
    
 

@@ -4,17 +4,21 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/controller/ClienteController.java</file>
+            <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/model/Locacao.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/dao/ClienteDAO.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/controller/MenuController.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/model/Cidade.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/view/FilmeView.java</file>
+            <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/Main.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/model/Estado.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/view/VendedorView.java</file>
-            <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/main.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/model/Vendedor.java</file>
+            <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/view/LocacaoView.java</file>
+            <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/controller/LocacaoController.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/controller/VendedorController.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/dao/VendedorDAO.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/view/MenuView.java</file>
+            <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/controller/FilmeController.java</file>
             <file>file:/C:/WorkspaceNetbeans/Locadora/src/br/com/foursys/locadora/view/ClienteView.java</file>
         </group>
     </open-files>
